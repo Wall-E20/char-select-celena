@@ -1,5 +1,5 @@
--- name: [CS] Character Select Template
--- description: Write mod description here!\n\nMade by: You!\n\n\\#ff7777\\This Pack requires Character Select\nto use as a Library!
+-- name: [CS] Celena
+-- description: Celena!\n\n\\#ff7777\\This Pack requires Character Select\nto use as a Library!
 
 --[[
     API Documentation for Character Select can be found below:
@@ -31,10 +31,10 @@ end
     Ex: life-icon.png -> squis
 ]]
 
-local E_MODEL_CHAR =      smlua_model_util_get_id("celena_geo")      -- Located in "actors"
+local E_MODEL_CELENA = E_MODEL_FISH--smlua_model_util_get_id("celena_geo")      -- Located in "actors"
 -- local E_MODEL_CHAR_STAR = smlua_model_util_get_id("custom_model_star_geo") -- Located in "actors"
 
-local TEX_CHAR_LIFE_ICON = get_texture_info("celena-icon") -- Located in "textures"
+--local TEX_CHAR_LIFE_ICON = get_texture_info("celena-icon") -- Located in "textures"
 -- local TEX_CHAR_STAR_ICON = get_texture_info("exclamation-icon") -- Located in "textures"
 
 -- All sound files are located in "sound" folder
@@ -135,9 +135,11 @@ local HEALTH_METER_CHAR = {
 
 local rainbowColor = { r = 255, g = 0, b = 0 }
 -- Adds the custom character to the Character Select Menu
-CT_CELENA = _G.charSelect.character_add("Celena", "Character Select Lady!!!", "Wall_E20", rainbowColor, E_MODEL_FISH, CT_MARIO, "C", 1)
+CT_CELENA = _G.charSelect.character_add("Celena", "Character Select Lady!!!", "Wall_E20", rainbowColor, E_MODEL_CELENA, CT_MARIO, "C", 1)
 
-_G.charSelect.character_add_palette_preset(E_MODEL_CHAR, PALETTE_CHAR)
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
 
 -- Adds credits to the credits menu
 _G.charSelect.credit_add(TEXT_MOD_NAME, "Squishy 6094", "Programming")

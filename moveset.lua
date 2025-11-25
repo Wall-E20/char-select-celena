@@ -1,3 +1,4 @@
+local pickerTimerMax = 150
 gPlayerSyncTable[0].LTrigDown = false
 
 local gExtraStates = {}
@@ -7,6 +8,10 @@ for i = 0, MAX_PLAYERS do
         movesMenu = false,
         movesMenuHover = 1,
         moveset = {},
+
+        pickTimer = 0,
+        pickVel = {x = 0, y = 0, z = 0},
+        pickMult = 1,
     }
 end
 
@@ -24,6 +29,35 @@ local function update_moveset_picker_list()
     end
 end
 
+---@param m MarioState
+local function init_celena_picker(m)
+    local e = gExtraStates[m.playerIndex]
+    if m.playerIndex == 0 then
+        update_moveset_picker_list()
+    end
+    vec3f_copy(e.pickVel, m.vel)
+end
+
+---@param m MarioState
+local function update_celena_picker(m)
+    local e = gExtraStates[0]
+    if e.pickTimer > pickerTimerMax then
+        e.pickMult = e.pickMult*1.1
+    else
+        e.pickMult = e.pickMult/1.1
+    end
+    e.pickMult = math.clamp(e.pickMult, 0.001, 1)
+
+    m.vel.x = e.pickVel.x * e.pickMult
+    m.vel.y = e.pickVel.y * e.pickMult
+    m.vel.z = e.pickVel.z * e.pickMult
+    djui_chat_message_create("----")
+    djui_chat_message_create(tostring(m.vel.x))
+    djui_chat_message_create(tostring(m.vel.y))
+    djui_chat_message_create(tostring(m.vel.z))
+
+    e.pickTimer = e.pickTimer + 1
+end
 
 local function hud_render()
     local e = gExtraStates[0]
@@ -82,7 +116,7 @@ local function before_mario_update(m)
 
     if p.LTrigDown then
         if not e.movesMenu then
-            update_moveset_picker_list()
+            init_celena_picker(m)
             e.movesMenu = true
         end
         e.stickAngle = atan2s(m.controller.stickY, -m.controller.stickX)
@@ -93,7 +127,7 @@ local function before_mario_update(m)
             local angle = -0x10000*((i - 1)/#movesetList) + 0x8000
 
             local dist = math.abs(e.stickAngle - angle)
-            djui_chat_message_create(tostring(dist))
+            --djui_chat_message_create(tostring(dist))
             if lowestDist == nil or dist < lowestDist then
                 lowestDist = dist
                 e.movesMenuHover = movesetList[i].charNum
@@ -103,6 +137,10 @@ local function before_mario_update(m)
         nullify_inputs(m)
     else
         e.movesMenu = false
+    end
+
+    if p.LTrigDown or e.pickMult < 1 then
+        update_celena_picker(m)
     end
 end
 
