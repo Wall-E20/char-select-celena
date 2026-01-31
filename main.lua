@@ -31,7 +31,7 @@ end
     Ex: life-icon.png -> squis
 ]]
 
-local E_MODEL_CELENA = E_MODEL_FISH--smlua_model_util_get_id("celena_geo")      -- Located in "actors"
+E_MODEL_CELENA = smlua_model_util_get_id("celena_geo")      -- Located in "actors"
 -- local E_MODEL_CHAR_STAR = smlua_model_util_get_id("custom_model_star_geo") -- Located in "actors"
 
 --local TEX_CHAR_LIFE_ICON = get_texture_info("celena-icon") -- Located in "textures"
