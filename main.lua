@@ -101,15 +101,65 @@ local CAPTABLE_CHAR = {
 }
 ]]
 
-local PALETTE_CHAR = {
-    [PANTS]  = "ffffff",
-    [SHIRT]  = "ffffff",
+local PALETTE_CEL_NONE = {
+    [PANTS]  = "77739c",
+    [SHIRT]  = "d0cbff",
+    [GLOVES] = "272537",
+    [SHOES]  = "272537",
+    [HAIR]   = "d0cbff",
+    [SKIN]   = "f7d4c7",
+    [CAP]    = "d0cbff",
+	[EMBLEM] = "d0cbff"
+}
+local PALETTE_CEL_MAR = {
+    [PANTS]  = "0000ff",
+    [SHIRT]  = "ff0000",
     [GLOVES] = "ffffff",
-    [SHOES]  = "ffffff",
-    [HAIR]   = "ffffff",
-    [SKIN]   = "ffffff",
-    [CAP]    = "ffffff",
-	[EMBLEM] = "ffffff"
+    [SHOES]  = "272537",
+    [HAIR]   = "730600",
+    [SKIN]   = "fec079",
+    [CAP]    = "ff0000",
+    [EMBLEM] = "ff0000"
+}
+local PALETTE_CEL_LUIG = {
+    [PANTS] = { r = 0x00, g = 0x00, b = 0xff },
+    [SHIRT] = { r = 0x00, g = 0xff, b = 0x00 },
+    [GLOVES] = { r = 0xff, g = 0xff, b = 0xff },
+    [SHOES] = "272537",
+    [HAIR] = { r = 0x73, g = 0x06, b = 0x00 },
+    [SKIN] = { r = 0xfe, g = 0xc1, b = 0x79 },
+    [CAP] = { r = 0x00, g = 0xff, b = 0x00 },
+    [EMBLEM] = { r = 0x00, g = 0xff, b = 0x00 },
+}
+local PALETTE_CEL_TOAD = {
+    [PANTS] = { r = 0xff, g = 0xff, b = 0xff },
+    [SHIRT] = { r = 0x4c, g = 0x2c, b = 0xd3 },
+    [GLOVES] = { r = 0xff, g = 0xff, b = 0xff },
+    [SHOES] = "272537",
+    [HAIR] = { r = 0x73, g = 0x06, b = 0x00 },
+    [SKIN] = { r = 0xfe, g = 0xd5, b = 0xa1 },
+    [CAP] = { r = 0xff, g = 0x00, b = 0x00 },
+    [EMBLEM] = { r = 0xff, g = 0x00, b = 0x00 },
+}
+local PALETTE_CEL_WAR = {
+    [PANTS] = { r = 0x7f, g = 0x20, b = 0x7a },
+    [SHIRT] = { r = 0xff, g = 0xbd, b = 0x00 },
+    [GLOVES] = { r = 0xff, g = 0xff, b = 0xff },
+    [SHOES] = "272537",
+    [HAIR] = { r = 0x73, g = 0x53, b = 0x00 },
+    [SKIN] = { r = 0xfe, g = 0xc1, b = 0x79 },
+    [CAP] = { r = 0xff, g = 0xbd, b = 0x00 },
+    [EMBLEM] = { r = 0x00, g = 0x00, b = 0xff },
+}
+local PALETTE_CEL_WALUIG = {
+    [PANTS] = { r = 0x16, g = 0x16, b = 0x27 },
+    [SHIRT] = { r = 0x61, g = 0x26, b = 0xb0 },
+    [GLOVES] = { r = 0xff, g = 0xff, b = 0xff },
+    [SHOES] = "272537",
+    [HAIR] = { r = 0x73, g = 0x53, b = 0x00 },
+    [SKIN] = { r = 0xfe, g = 0xc1, b = 0x79 },
+    [CAP] = { r = 0x61, g = 0x26, b = 0xb0 },
+    [EMBLEM] = { r = 0xff, g = 0xde, b = 0x00 },
 }
 
 -- All Located in "textures" folder
@@ -137,9 +187,12 @@ local rainbowColor = { r = 255, g = 0, b = 0 }
 -- Adds the custom character to the Character Select Menu
 CT_CELENA = _G.charSelect.character_add("Celena", "Character Select Lady!!!", "Wall_E20", rainbowColor, E_MODEL_CELENA, CT_MARIO, "C", 1)
 
-_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
-_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
-_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CHAR)
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_NONE, "None")
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_MAR, "Mario")
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_LUIG, "Luigi")
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_WAR, "Wario")
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_TOAD, "Toad")
+_G.charSelect.character_add_palette_preset(E_MODEL_CELENA, PALETTE_CEL_WALUIG, "Waluigi")
 
 -- Adds credits to the credits menu
 _G.charSelect.credit_add(TEXT_MOD_NAME, "Squishy 6094", "Programming")
