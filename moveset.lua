@@ -19,6 +19,22 @@ for i = 0, MAX_PLAYERS do
     }
 end
 
+local TOGGLE_CELENA_MODELS = _G.charSelect.add_option("Celena Swapping", 1, 1, nil, {"Toggles if Celena's Model", "is overridden by", "'character_edit'"})
+
+local og_char_edit = _G.charSelect.character_edit
+local function character_edit(charNum, name, description, credit, color, modelInfo, baseChar, lifeIcon, camScale)
+    local e = gExtraStates[0]
+    if e.charNum == charNum then
+        local toggle = _G.charSelect.get_options_status(TOGGLE_CELENA_MODELS) ~= 0
+        local ogModel = _G.charSelect.character_get_current_table(charNum, 1).ogModel
+        local model = (modelInfo == ogModel or not toggle) and E_MODEL_CELENA or modelInfo
+        og_char_edit(CT_CELENA, nil, nil, nil, nil, model, nil, nil, nil)
+    else
+        og_char_edit(charNum, name, description, credit, color, modelInfo, baseChar, lifeIcon, camScale)
+    end
+end
+_G.charSelect.character_edit = character_edit
+
 local function get_mario_state(...)
     local n = select("#", ...)
     for i = 1, n do
@@ -73,19 +89,20 @@ local function act_celena_picker(m)
         m.vel.z = e.prevVel.z * velMult
     else
         vec3f_copy(m.vel, e.prevVel)
-        m.action = e.prevAction
-        m.actionTimer = e.prevActionTimer
-        m.actionState = e.prevActionState
-        m.actionArg = e.prevActionArg
-        m.marioObj.header.gfx.animInfo.animFrame = e.prevAnimFrame
+        set_mario_action(m, ACT_FREEFALL, 0)
         
-        if #movesetList > 0 then
+        if #movesetList > 0 and m.playerIndex == 0 then
             for i = 1, #movesetList do
                 gExtraStates[m.playerIndex].moveset = {}
                 if movesetList[i].saveName == gPlayerSyncTable[m.playerIndex].selectedMoveset then
                     gExtraStates[m.playerIndex].moveset = movesetList[i].charNum ~= CT_CELENA and _G.charSelect.character_get_moveset(movesetList[i].charNum) or {}
                     local animTable = _G.charSelect.character_get_animations(movesetList[i].ogModel)
-                    _G.charSelect.character_add_animations(E_MODEL_CELENA, animTable.anims or {}, animTable.eyes or {}, animTable.hands or {})
+                    if animTable ~= nil then
+                        _G.charSelect.character_add_animations(E_MODEL_CELENA, animTable.anims or {}, animTable.eyes or {}, animTable.hands or {})
+                    else
+                        _G.charSelect.character_add_animations(E_MODEL_CELENA, {}, {}, {})
+                    end
+                    og_char_edit(CT_CELENA, nil, nil, nil, nil, E_MODEL_CELENA)
                     return
                 end
             end
@@ -159,6 +176,7 @@ local function before_mario_action(m, nextAct)
 end
 
 local function mario_update(m)
+    -- Open Picker
     if m.controller.buttonPressed & L_TRIG ~= 0 then
         set_mario_action(m, ACT_CELENA_PICKER, 0)
     end
@@ -183,17 +201,3 @@ for i = 0, HOOK_MAX - 1 do
         end
     end)
 end
-
-local og_char_edit = _G.charSelect.character_edit
-local function character_edit(charNum, name, description, credit, color, modelInfo, baseChar, lifeIcon, camScale)
-    local e = gExtraStates[0]
-    if e.charNum == charNum then
-        djui_chat_message_create(tostring(modelInfo == _G.charSelect.character_get_current_table(charNum, 1).ogModel))
-        local model = (modelInfo == _G.charSelect.character_get_current_table(charNum, 1).ogModel) and E_MODEL_CELENA or modelInfo
-        og_char_edit(CT_CELENA, nil, nil, nil, nil, model, nil, nil, nil)
-    else
-        og_char_edit(charNum, name, description, credit, color, modelInfo, baseChar, lifeIcon, camScale)
-    end
-end
-
-_G.charSelect.character_edit = character_edit
